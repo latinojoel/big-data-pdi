@@ -227,7 +227,7 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>256</xloc>
+      <xloc>480</xloc>
       <yloc>96</yloc>
       </entry>
     <entry>
@@ -263,7 +263,7 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>896</xloc>
+      <xloc>1120</xloc>
       <yloc>96</yloc>
       </entry>
     <entry>
@@ -290,7 +290,7 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>416</xloc>
+      <xloc>640</xloc>
       <yloc>96</yloc>
       </entry>
     <entry>
@@ -313,7 +313,7 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>544</xloc>
+      <xloc>768</xloc>
       <yloc>96</yloc>
       </entry>
     <entry>
@@ -340,20 +340,40 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>672</xloc>
+      <xloc>896</xloc>
       <yloc>96</yloc>
+      </entry>
+    <entry>
+      <name>File Exists</name>
+      <description/>
+      <type>FILE_EXISTS</type>
+      <filename>hdfs&#x3a;&#x2f;&#x2f;trusty-cdh5&#x3a;8020&#x2f;user&#x2f;vagrant&#x2f;sampledata&#x2f;snapshot&#x2f;20160726&#x2f;CUSTOMERS&#x2f;data</filename>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>224</xloc>
+      <yloc>96</yloc>
+      </entry>
+    <entry>
+      <name>Delete folders</name>
+      <description/>
+      <type>DELETE_FOLDERS</type>
+      <arg_from_previous>N</arg_from_previous>
+      <success_condition>success_if_no_errors</success_condition>
+      <limit_folders>10</limit_folders>
+      <fields>
+        <field>
+          <name>hdfs&#x3a;&#x2f;&#x2f;trusty-cdh5&#x3a;8020&#x2f;user&#x2f;vagrant&#x2f;sampledata&#x2f;snapshot&#x2f;20160726&#x2f;CUSTOMERS&#x2f;data</name>
+        </field>
+      </fields>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>224</xloc>
+      <yloc>224</yloc>
       </entry>
   </entries>
   <hops>
-    <hop>
-      <from>START</from>
-      <to>Sqoop Import 2</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>Y</unconditional>
-    </hop>
     <hop>
       <from>Sqoop Import 2</from>
       <to>Copy Files</to>
@@ -389,6 +409,42 @@
       <enabled>Y</enabled>
       <evaluation>Y</evaluation>
       <unconditional>Y</unconditional>
+    </hop>
+    <hop>
+      <from>START</from>
+      <to>File Exists</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>Y</unconditional>
+    </hop>
+    <hop>
+      <from>File Exists</from>
+      <to>Sqoop Import 2</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>N</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>File Exists</from>
+      <to>Delete folders</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Delete folders</from>
+      <to>Sqoop Import 2</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
     </hop>
   </hops>
   <notepads>
