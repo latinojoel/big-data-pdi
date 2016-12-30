@@ -96,7 +96,7 @@
       <map_trans_repo_dir/>
       <map_trans_repo_file/>
       <map_trans_repo_reference/>
-      <map_trans>&#x2f;home&#x2f;latino&#x2f;Documents&#x2f;projects&#x2f;project-internal&#x2f;Xbank&#x2f;xbank-mapper.ktr</map_trans>
+      <map_trans>&#x24;&#x7b;Internal.Job.Filename.Directory&#x7d;&#x2f;xbank-mapper.ktr</map_trans>
       <combiner_trans_repo_dir/>
       <combiner_trans_repo_file/>
       <combiner_trans_repo_reference/>
@@ -105,7 +105,7 @@
       <reduce_trans_repo_dir/>
       <reduce_trans_repo_file/>
       <reduce_trans_repo_reference/>
-      <reduce_trans>&#x2f;home&#x2f;latino&#x2f;Documents&#x2f;projects&#x2f;project-internal&#x2f;Xbank&#x2f;xbank-reducer.ktr</reduce_trans>
+      <reduce_trans>&#x24;&#x7b;Internal.Job.Filename.Directory&#x7d;&#x2f;xbank-reducer.ktr</reduce_trans>
       <reduce_single_threaded>N</reduce_single_threaded>
       <map_input_step_name>IN</map_input_step_name>
       <map_output_step_name>OUT</map_output_step_name>
@@ -124,7 +124,7 @@
       <suppress_output_key>Y</suppress_output_key>
       <suppress_output_value>N</suppress_output_value>
       <output_format_class>org.apache.hadoop.mapred.TextOutputFormat</output_format_class>
-      <cluster_name>centos-hdp</cluster_name>
+      <cluster_name>HDP</cluster_name>
       <hdfs_hostname>centos-hdp</hdfs_hostname>
       <hdfs_port>8020</hdfs_port>
       <job_tracker_hostname>centos-hdp</job_tracker_hostname>
@@ -136,7 +136,7 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>416</xloc>
+      <xloc>704</xloc>
       <yloc>96</yloc>
       </entry>
     <entry>
@@ -152,14 +152,77 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>616</xloc>
+      <xloc>992</xloc>
+      <yloc>96</yloc>
+      </entry>
+    <entry>
+      <name>Copy Input Data</name>
+      <description/>
+      <type>HadoopCopyFilesPlugin</type>
+      <copy_empty_folders>N</copy_empty_folders>
+      <arg_from_previous>N</arg_from_previous>
+      <overwrite_files>Y</overwrite_files>
+      <include_subfolders>N</include_subfolders>
+      <remove_source_files>N</remove_source_files>
+      <add_result_filesname>N</add_result_filesname>
+      <destination_is_a_file>N</destination_is_a_file>
+      <create_destination_folder>Y</create_destination_folder>
+      <fields>
+        <field>
+          <source_filefolder>&#x24;&#x7b;Internal.Job.Filename.Directory&#x7d;&#x2f;data&#x2f;input_data</source_filefolder>
+          <source_configuration_name>LOCAL-SOURCE-FILE-0</source_configuration_name>
+          <destination_filefolder>hdfs&#x3a;&#x2f;&#x2f;vagrant&#x3a;vagrant&#x40;centos-hdp&#x3a;8020&#x2f;user&#x2f;vagrant&#x2f;xbank&#x2f;input</destination_filefolder>
+          <destination_configuration_name>HDP</destination_configuration_name>
+          <wildcard/>
+        </field>
+      </fields>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>320</xloc>
+      <yloc>96</yloc>
+      </entry>
+    <entry>
+      <name>Copy Rates</name>
+      <description/>
+      <type>HadoopCopyFilesPlugin</type>
+      <copy_empty_folders>N</copy_empty_folders>
+      <arg_from_previous>N</arg_from_previous>
+      <overwrite_files>Y</overwrite_files>
+      <include_subfolders>N</include_subfolders>
+      <remove_source_files>N</remove_source_files>
+      <add_result_filesname>N</add_result_filesname>
+      <destination_is_a_file>N</destination_is_a_file>
+      <create_destination_folder>Y</create_destination_folder>
+      <fields>
+        <field>
+          <source_filefolder>&#x24;&#x7b;Internal.Job.Filename.Directory&#x7d;&#x2f;data&#x2f;rates</source_filefolder>
+          <source_configuration_name>LOCAL-SOURCE-FILE-0</source_configuration_name>
+          <destination_filefolder>hdfs&#x3a;&#x2f;&#x2f;vagrant&#x3a;vagrant&#x40;centos-hdp&#x3a;8020&#x2f;user&#x2f;vagrant&#x2f;xbank&#x2f;</destination_filefolder>
+          <destination_configuration_name>HDP</destination_configuration_name>
+          <wildcard/>
+        </field>
+      </fields>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>496</xloc>
       <yloc>96</yloc>
       </entry>
   </entries>
   <hops>
     <hop>
+      <from>Pentaho MapReduce</from>
+      <to>SQL</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
       <from>START</from>
-      <to>Pentaho MapReduce</to>
+      <to>Copy Input Data</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -167,8 +230,17 @@
       <unconditional>Y</unconditional>
     </hop>
     <hop>
-      <from>Pentaho MapReduce</from>
-      <to>SQL</to>
+      <from>Copy Input Data</from>
+      <to>Copy Rates</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Copy Rates</from>
+      <to>Pentaho MapReduce</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
